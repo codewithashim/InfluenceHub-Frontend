@@ -1,0 +1,11 @@
+# dependencies & build artifacts
+node_modules
+.next
+out
+
+# env & local
+.env*
+npm-debug.log*
+.vscode
+.DS_Store
+.git
