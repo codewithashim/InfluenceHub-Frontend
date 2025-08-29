@@ -1,8 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InfluenceHub Frontend
 
-## Getting Started
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app). It is containerized using Docker for easy development and deployment.
 
-First, run the development server:
+## Prerequisites
+
+- Docker and Docker Compose installed on your machine.
+- Node.js (if running without Docker).
+- A `.env` file in the root directory with necessary environment variables (see `.env.example` for reference).
+
+## Docker Setup
+
+### Development Mode
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/codewithashim/InfluenceHub-Frontend.git
+   cd influence-hub
+   ```
+
+2. Ensure you have a `.env` file configured.
+
+3. Build and run the application in development mode:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   This will start the development server with hot reloading enabled. Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+4. To stop the container:
+
+   ```bash
+   docker-compose down
+   ```
+
+### Production Mode
+
+For production, update the `Dockerfile` CMD to `["npm", "start"]` and remove the `volumes` from `docker-compose.yaml`, then rebuild:
+
+```bash
+docker-compose up --build
+```
+
+This uses a multistage Docker build to create a slim production image.
+
+### Manual Docker Commands
+
+- Build the Docker image:
+
+  ```bash
+  docker build -t influence-hub .
+  ```
+
+- Run the container:
+
+  ```bash
+  docker run -p 3000:3000 --env-file .env influence-hub
+  ```
+
+## Local Development (Without Docker)
+
+First, install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,15 +79,32 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Building for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Environment Variables
+
+Create a `.env` file based on `.env.example`. Key variables include:
+
+- `NODE_ENV`: Set to `development` or `production`.
+- Other app-specific variables as needed.
+
+## Project Structure
+
+- `src/`: Source code
+- `public/`: Static assets
+- `Dockerfile`: Multistage Docker build configuration
+- `docker-compose.yaml`: Docker Compose setup for easy container management
 
 ## Learn More
 
