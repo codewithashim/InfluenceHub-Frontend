@@ -5,10 +5,10 @@ import { Input } from "@/shared/components/ui/input"
 import { Button } from "@/shared/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select"
 import { Badge } from "@/shared/components/ui/badge"
-import { Search, Filter } from "lucide-react"
+import { Search, Filter, X } from "lucide-react"
 import { Platform } from "@/shared/types/types"
 import { PLATFORMS, COUNTRIES, CATEGORIES } from "@/shared/lib/constants"
- 
+
 
 interface FilterBarProps {
   platform: Platform | ""
@@ -44,16 +44,16 @@ export function FilterBar({
   const hasActiveFilters = platform || minFollowers || country || category || searchQuery
 
   return (
-    <div className="bg-card border rounded-lg p-4 mb-6 sticky top-0 z-10">
-      <div className="flex flex-col gap-4">
+    <div className="bg-white p-6 mb-8">
+      <div className="space-y-6">
         {/* Search bar - always visible */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <div className="relative max-w-md">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
           <Input
             placeholder="Search by name or username..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-12 pr-4 py-3 text-base bg-slate-50 focus:bg-white transition-colors"
           />
         </div>
 
@@ -63,19 +63,20 @@ export function FilterBar({
             variant="outline"
             size="sm"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100"
           >
             <Filter className="h-4 w-4" />
             Filters
             {hasActiveFilters && (
-              <Badge variant="secondary" className="ml-1">
+              <Badge variant="secondary" className="ml-1 bg-blue-100 text-blue-700">
                 {[platform, minFollowers, country, category].filter(Boolean).length}
               </Badge>
             )}
           </Button>
 
           {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={onClearFilters}>
+            <Button variant="ghost" size="sm" onClick={onClearFilters} className="text-slate-600 hover:text-slate-900">
+              <X className="h-4 w-4 mr-1" />
               Clear All
             </Button>
           )}
@@ -86,7 +87,7 @@ export function FilterBar({
           className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 ${!isExpanded ? "hidden sm:grid" : ""}`}
         >
           <Select value={platform} onValueChange={(value) => setPlatform(value as Platform | "")}>
-            <SelectTrigger className="bg-card">
+            <SelectTrigger className="bg-slate-50 hover:bg-white transition-colors h-12">
               <SelectValue placeholder="All Platforms" />
             </SelectTrigger>
             <SelectContent>
@@ -105,10 +106,11 @@ export function FilterBar({
             value={minFollowers}
             onChange={(e) => setMinFollowers(e.target.value)}
             min="0"
+            className="bg-slate-50 hover:bg-white transition-colors h-12"
           />
 
           <Select value={country} onValueChange={setCountry}>
-            <SelectTrigger className="bg-card">
+            <SelectTrigger className="bg-slate-50 hover:bg-white transition-colors h-12">
               <SelectValue placeholder="All Countries" />
             </SelectTrigger>
             <SelectContent>
@@ -122,7 +124,7 @@ export function FilterBar({
           </Select>
 
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="bg-card">
+            <SelectTrigger className="bg-slate-50 hover:bg-white transition-colors h-12">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -137,7 +139,12 @@ export function FilterBar({
 
           <div className="hidden sm:flex lg:col-span-1 xl:col-span-1">
             {hasActiveFilters && (
-              <Button variant="outline" onClick={onClearFilters} className="w-full bg-transparent">
+              <Button
+                variant="outline"
+                onClick={onClearFilters}
+                className="w-full bg-slate-50 hover:bg-white transition-colors h-12"
+              >
+                <X className="h-4 w-4 mr-2" />
                 Clear Filters
               </Button>
             )}

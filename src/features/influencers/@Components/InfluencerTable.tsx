@@ -59,7 +59,7 @@ export function InfluencerTable({ influencers, sortField, sortOrder, onSort, isA
 
   return (
     <>
-      <div className="border rounded-lg overflow-hidden">
+      <div className="bg-white overflow-hidden">
         <Table>
           <InfluencerTableHeader
             sortField={sortField}

@@ -12,41 +12,53 @@ interface InfluencerTableHeaderProps {
 
 export function InfluencerTableHeader({ sortField, sortOrder, onSort }: InfluencerTableHeaderProps) {
   const getSortIcon = (field: "followers" | "engagement_rate") => {
-    if (sortField !== field) return <ArrowUpDown className="h-4 w-4" />
-    return sortOrder === "asc" ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />
+    if (sortField !== field) return <ArrowUpDown className="h-4 w-4 text-slate-400" />
+    return sortOrder === "asc" ? <ArrowUp className="h-4 w-4 text-slate-600" /> : <ArrowDown className="h-4 w-4 text-slate-600" />
   }
 
   return (
     <TableHeader>
-      <TableRow>
-        <TableHead>Name</TableHead>
-        <TableHead>Platform</TableHead>
-        <TableHead>Username</TableHead>
-        <TableHead className="text-right">
+      <TableRow className="border-b border-slate-200 hover:bg-slate-50/50">
+        <TableHead className="h-12 px-6 text-left align-middle font-semibold text-slate-900 text-sm uppercase tracking-wider">
+          Influencer
+        </TableHead>
+        <TableHead className="h-12 px-6 text-left align-middle font-semibold text-slate-900 text-sm uppercase tracking-wider">
+          Platform
+        </TableHead>
+        <TableHead className="h-12 px-6 text-left align-middle font-semibold text-slate-900 text-sm uppercase tracking-wider">
+          Username
+        </TableHead>
+        <TableHead className="h-12 px-6 text-right align-middle">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onSort("followers")}
-            className="h-auto p-0 font-medium hover:bg-transparent"
+            className="h-auto p-0 font-semibold text-slate-900 hover:bg-slate-100 hover:text-slate-900 text-sm uppercase tracking-wider"
           >
             Followers
-            {getSortIcon("followers")}
+            <span className="ml-2">{getSortIcon("followers")}</span>
           </Button>
         </TableHead>
-        <TableHead className="text-right">
+        <TableHead className="h-12 px-6 text-right align-middle">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onSort("engagement_rate")}
-            className="h-auto p-0 font-medium hover:bg-transparent"
+            className="h-auto p-0 font-semibold text-slate-900 hover:bg-slate-100 hover:text-slate-900 text-sm uppercase tracking-wider"
           >
             Engagement
-            {getSortIcon("engagement_rate")}
+            <span className="ml-2">{getSortIcon("engagement_rate")}</span>
           </Button>
         </TableHead>
-        <TableHead>Country</TableHead>
-        <TableHead>Categories</TableHead>
-        <TableHead className="text-right">Actions</TableHead>
+        <TableHead className="h-12 px-6 text-left align-middle font-semibold text-slate-900 text-sm uppercase tracking-wider">
+          Country
+        </TableHead>
+        <TableHead className="h-12 px-6 text-left align-middle font-semibold text-slate-900 text-sm uppercase tracking-wider">
+          Categories
+        </TableHead>
+        <TableHead className="h-12 px-6 text-right align-middle font-semibold text-slate-900 text-sm uppercase tracking-wider">
+          Actions
+        </TableHead>
       </TableRow>
     </TableHeader>
   )
