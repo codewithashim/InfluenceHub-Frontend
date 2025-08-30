@@ -6,7 +6,7 @@ import { useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/shared/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/shared/components/ui/sheet"
-import { Users, Plus, Menu, Home, Settings,LogOut } from "lucide-react"
+import { Users, Plus, Menu, Home, LogOut } from "lucide-react"
 import { cn } from "@/shared/lib/utils"
 import { ProtectedRoute } from "../../../shared/components/ProtectedRoute"
 import { useAuth } from "../../../shared/hooks/useAuth"
@@ -91,16 +91,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <Home className="h-4 w-4 transition-colors group-hover:text-primary" />
             Back to Home
           </Button>
-          {isAdmin && (
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 h-11 text-slate-600 hover:text-slate-900 hover:bg-white/80 rounded-xl font-medium transition-all duration-300 group"
-              onClick={() => router.push("/settings")}
-            >
-              <Settings className="h-4 w-4 transition-colors group-hover:text-primary" />
-              Settings
-            </Button>
-          )}
+        
           <Button
             variant="ghost"
             className="w-full justify-start gap-3 h-11 text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-xl font-medium transition-all duration-300 group"
