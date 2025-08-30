@@ -2,13 +2,13 @@
 
 import { useEffect, useCallback } from 'react';
 import { useApi } from './useApi';
-import { apiService, User } from '@/shared/api/api';
+import { authApiService, User } from '@/shared/api/authApi';
 
 export function useCurrentUser() {
   const { data: user, loading, error, execute } = useApi<User>();
 
   const fetchUser = useCallback(() => {
-    return execute(() => apiService.getCurrentUser());
+    return execute(() => authApiService.getCurrentUser());
   }, [execute]);
 
   useEffect(() => {

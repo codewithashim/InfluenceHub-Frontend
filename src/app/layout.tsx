@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../shared/styles/globals.css";
 import { AuthProvider } from "@/shared/context";
+import { ToastProvider } from "@/shared/hooks/use-toast";
  
 export const metadata: Metadata = {
   title: "Influence Hub",
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <AuthProvider>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </AuthProvider>
       </body>
     </html>
