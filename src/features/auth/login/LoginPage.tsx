@@ -40,7 +40,7 @@ export default function LoginPage() {
     clearMessages()
     try {
       await handleLogin(data.email, data.password)
-      router.push("/dashboard")
+      router.push("/influencers")
     } catch (err) {
       console.error(err)
       setError(err instanceof Error ? err.message : "An error occurred during login")
