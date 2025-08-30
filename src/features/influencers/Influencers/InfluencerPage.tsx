@@ -7,7 +7,6 @@ import { InfluencerTable } from "@/features/influencers/@Components/InfluencerTa
 import { InfluencerCards } from "@/features/influencers/@Components/InfluencerCards"
 import { Pagination } from "@/features/influencers/@Components/Pagination"
 import { Button } from "@/shared/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Plus, RefreshCw, Users, TrendingUp, Globe, Star } from "lucide-react"
 import { useAuth } from "@/shared/hooks/useAuth"
 import { useDebounce } from "@/shared/hooks/useDebounce"
@@ -166,69 +165,77 @@ export default function InfluencersPage() {
   }, [result])
 
   return (
-   
-      <div className="min-h-screen bg-background flex flex-col">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Influencers</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">Active profiles</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Reach</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalFollowers}M</div>
-              <p className="text-xs text-muted-foreground">Combined followers</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Engagement</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.avgEngagement}%</div>
-              <p className="text-xs text-muted-foreground">Engagement rate</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Countries</CardTitle>
-              <Globe className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.countries}</div>
-              <p className="text-xs text-muted-foreground">Global presence</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Influencer Directory</h1>
-            <p className="text-muted-foreground">
-              {result.total} influencer{result.total !== 1 ? "s" : ""} found
-            </p>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Stats Section with Modern Design */}
+      <div className="relative overflow-hidden py-8">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+          <div className="group relative bg-gradient-to-br from-primary/10 via-accent/5 to-transparent backdrop-blur-sm rounded-xl p-6 border-0 hover:scale-105 transition-all duration-300 animate-slide-up">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-primary/20 rounded-lg">
+                <Users className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-primary/60 text-sm font-medium">Active</div>
+            </div>
+            <div className="text-3xl font-bold text-foreground mb-1">{stats.total}</div>
+            <p className="text-muted-foreground text-sm">Total Influencers</p>
           </div>
 
-          {isAdmin && (
-            <Button onClick={() => router.push("/influencers/new")} className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Influencer
-            </Button>
-          )}
+          <div className="group relative bg-gradient-to-br from-accent/10 via-primary/5 to-transparent backdrop-blur-sm rounded-xl p-6 border-0 hover:scale-105 transition-all duration-300 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-accent/20 rounded-lg">
+                <TrendingUp className="h-6 w-6 text-accent" />
+              </div>
+              <div className="text-accent/60 text-sm font-medium">Reach</div>
+            </div>
+            <div className="text-3xl font-bold text-foreground mb-1">{stats.totalFollowers}M</div>
+            <p className="text-muted-foreground text-sm">Combined Followers</p>
+          </div>
+
+          <div className="group relative bg-gradient-to-br from-primary/10 via-accent/5 to-transparent backdrop-blur-sm rounded-xl p-6 border-0 hover:scale-105 transition-all duration-300 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-primary/20 rounded-lg">
+                <Star className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-primary/60 text-sm font-medium">Engagement</div>
+            </div>
+            <div className="text-3xl font-bold text-foreground mb-1">{stats.avgEngagement}%</div>
+            <p className="text-muted-foreground text-sm">Average Rate</p>
+          </div>
+
+          <div className="group relative bg-gradient-to-br from-accent/10 via-primary/5 to-transparent backdrop-blur-sm rounded-xl p-6 border-0 hover:scale-105 transition-all duration-300 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-accent/20 rounded-lg">
+                <Globe className="h-6 w-6 text-accent" />
+              </div>
+              <div className="text-accent/60 text-sm font-medium">Global</div>
+            </div>
+            <div className="text-3xl font-bold text-foreground mb-1">{stats.countries}</div>
+            <p className="text-muted-foreground text-sm">Countries</p>
+          </div>
         </div>
+      </div>
+
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 px-4 py-6 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            Influencer Directory
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            Discover and manage {result.total} influencer{result.total !== 1 ? "s" : ""} in our network
+          </p>
+        </div>
+
+        {isAdmin && (
+          <Button
+            onClick={() => router.push("/influencers/new")}
+            className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground hover:scale-105 transition-all duration-300 px-6 py-3 rounded-xl border-0"
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Add Influencer
+          </Button>
+        )}
+      </div>
 
         <FilterBar
           platform={platform}

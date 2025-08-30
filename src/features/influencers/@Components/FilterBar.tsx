@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/shared/components/ui/badge"
 import { Search, Filter } from "lucide-react"
 import { Platform } from "@/shared/types/types"
+import { PLATFORMS, COUNTRIES, CATEGORIES } from "@/shared/lib/constants"
  
 
 interface FilterBarProps {
@@ -23,68 +24,7 @@ interface FilterBarProps {
   onClearFilters: () => void
 }
 
-const platforms: { value: Platform; label: string }[] = [
-  { value: "instagram", label: "Instagram" },
-  { value: "tiktok", label: "TikTok" },
-  { value: "youtube", label: "YouTube" },
-  { value: "x", label: "X (Twitter)" },
-]
 
-const countries = [
-  { value: "US", label: "United States" },
-  { value: "GB", label: "United Kingdom" },
-  { value: "CA", label: "Canada" },
-  { value: "AU", label: "Australia" },
-  { value: "DE", label: "Germany" },
-  { value: "FR", label: "France" },
-  { value: "IT", label: "Italy" },
-  { value: "ES", label: "Spain" },
-  { value: "NL", label: "Netherlands" },
-  { value: "SE", label: "Sweden" },
-  { value: "NO", label: "Norway" },
-  { value: "DK", label: "Denmark" },
-  { value: "FI", label: "Finland" },
-  { value: "BR", label: "Brazil" },
-  { value: "MX", label: "Mexico" },
-  { value: "AR", label: "Argentina" },
-  { value: "IN", label: "India" },
-  { value: "JP", label: "Japan" },
-  { value: "KR", label: "South Korea" },
-  { value: "CN", label: "China" },
-  { value: "BD", label: "Bangladesh" },
-  { value: "PK", label: "Pakistan" },
-  { value: "ID", label: "Indonesia" },
-  { value: "TH", label: "Thailand" },
-  { value: "VN", label: "Vietnam" },
-  { value: "PH", label: "Philippines" },
-  { value: "MY", label: "Malaysia" },
-  { value: "SG", label: "Singapore" },
-  { value: "AE", label: "UAE" },
-  { value: "SA", label: "Saudi Arabia" },
-]
-
-const categories = [
-  "beauty",
-  "fitness",
-  "fashion",
-  "food",
-  "travel",
-  "tech",
-  "gaming",
-  "lifestyle",
-  "music",
-  "art",
-  "sports",
-  "business",
-  "education",
-  "comedy",
-  "dance",
-  "photography",
-  "diy",
-  "pets",
-  "parenting",
-  "health",
-]
 
 export function FilterBar({
   platform,
@@ -146,12 +86,12 @@ export function FilterBar({
           className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 ${!isExpanded ? "hidden sm:grid" : ""}`}
         >
           <Select value={platform} onValueChange={(value) => setPlatform(value as Platform | "")}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-card">
               <SelectValue placeholder="All Platforms" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Platforms</SelectItem>
-              {platforms.map((p) => (
+              {PLATFORMS.map((p) => (
                 <SelectItem key={p.value} value={p.value}>
                   {p.label}
                 </SelectItem>
@@ -168,13 +108,13 @@ export function FilterBar({
           />
 
           <Select value={country} onValueChange={setCountry}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-card">
               <SelectValue placeholder="All Countries" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Countries</SelectItem>
-              {countries.map((c) => (
-                <SelectItem key={c.value} value={c.value}>
+              {COUNTRIES.map((c) => (
+                <SelectItem key={c.value} value={c.value} >
                   {c.label}
                 </SelectItem>
               ))}
@@ -182,12 +122,12 @@ export function FilterBar({
           </Select>
 
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-card">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((c) => (
+              {CATEGORIES.map((c) => (
                 <SelectItem key={c} value={c}>
                   {c.charAt(0).toUpperCase() + c.slice(1)}
                 </SelectItem>
