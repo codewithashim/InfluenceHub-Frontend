@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/shared/context';
+import { useAuth } from '@/shared/context/AuthContext';
 import { useRoleAccess } from '@/shared/hooks';
 import { UserRole } from '@/shared/api/authApi';
 

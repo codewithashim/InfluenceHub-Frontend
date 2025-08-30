@@ -14,6 +14,9 @@ export const API_ENDPOINTS = {
   INFLUENCERS: {
     LIST: '/influencers',
     DETAIL: '/influencers/:id',
+    CREATE: '/influencers',
+    UPDATE: '/influencers/:id',
+    DELETE: '/influencers/:id',
   },
 } as const;
 

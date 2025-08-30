@@ -11,6 +11,7 @@ interface AuthContextType {
   signup: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,27 +28,48 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+const USER_STORAGE_KEY = 'auth_user';
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const isAuthenticated = !!user;
 
+  const isAdmin = user?.role === 'admin';
+
+  const getStoredUser = (): User | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const stored = localStorage.getItem(USER_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const setStoredUser = (user: User | null): void => {
+    if (typeof window === 'undefined') return;
+    if (user) {
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(USER_STORAGE_KEY);
+    }
+  };
+
   const refreshUser = useCallback(async () => {
     if (!authApiService.isAuthenticated()) {
       setUser(null);
+      setStoredUser(null);
       setIsLoading(false);
       return;
     }
-
     try {
       const currentUser = await authApiService.getCurrentUser();
       setUser(currentUser);
+      setStoredUser(currentUser);
     } catch (error) {
       console.error('Failed to refresh user:', error);
-      // Clear invalid token
-      authApiService.logout();
-      setUser(null);
     } finally {
       setIsLoading(false);
     }
@@ -58,6 +80,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const response = await authApiService.login({ email, password });
       setUser(response.user);
+      setStoredUser(response.user);
     } catch (error) {
       setIsLoading(false);
       throw error;
@@ -85,11 +108,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.error('Logout error:', error);
     } finally {
       setUser(null);
+      setStoredUser(null);
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    // Load user from localStorage on mount
+    const storedUser = getStoredUser();
+    if (storedUser) {
+      setUser(storedUser);
+    }
+    // Then refresh from API
     refreshUser();
   }, [refreshUser]);
 
@@ -101,6 +131,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signup,
     logout,
     refreshUser,
+    isAdmin
   };
 
   return (

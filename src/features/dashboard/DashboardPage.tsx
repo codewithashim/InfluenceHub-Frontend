@@ -4,11 +4,13 @@ import { useAuth, useAuthActions, useRoleAccess } from "@/shared/hooks"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { LogOut, User, Shield } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth()
   const { handleLogout } = useAuthActions()
   const { isAdmin } = useRoleAccess()
+  const router = useRouter()
 
   const handleLogoutClick = async () => {
     try {
@@ -117,7 +119,7 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Button className="w-full" variant="outline">
+                <Button className="w-full" variant="outline" onClick={() => router.push('/influencers')}>
                   View Influencers
                 </Button>
                 {isAdmin() && (
@@ -132,20 +134,22 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          {/* Placeholder for future content */}
+          {/* Influencer Directory */}
           <div className="mt-8">
             <Card>
               <CardHeader>
                 <CardTitle>Influencer Directory</CardTitle>
                 <CardDescription>
-                  Browse and manage influencers (Coming Soon)
+                  Browse and manage influencers
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  This section will contain the influencer directory functionality.
-                  For now, this is a placeholder to demonstrate the authenticated dashboard.
+                <p className="text-gray-600 mb-4">
+                  Access the complete influencer directory to browse, search, and manage influencer profiles.
                 </p>
+                <Button onClick={() => router.push('/influencers')}>
+                  Go to Influencer Directory
+                </Button>
               </CardContent>
             </Card>
           </div>
