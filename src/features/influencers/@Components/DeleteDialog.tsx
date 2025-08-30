@@ -22,7 +22,7 @@ interface DeleteDialogProps {
 export function DeleteDialog({ open, onOpenChange, onConfirm, influencerName, isDeleting = false }: DeleteDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Influencer</AlertDialogTitle>
           <AlertDialogDescription>
