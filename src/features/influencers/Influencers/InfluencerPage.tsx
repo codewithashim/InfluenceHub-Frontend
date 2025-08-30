@@ -13,7 +13,7 @@ export default function InfluencersPage() {
   const influencersHook = useInfluencers()
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen">
       <StatsSection result={influencersHook.result} />
       <HeaderSection result={influencersHook.result} isAdmin={isAdmin} />
       <ContentSection

@@ -26,8 +26,8 @@ export function StatsSection({ result }: StatsSectionProps) {
   }, [result])
 
   return (
-    <div className="py-12 px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="py-8 px-4">
+      <div className="mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Total Influencers */}
           <div className="group bg-gradient-to-br from-slate-50 to-slate-100/50 p-8 transition-all duration-300 hover:from-slate-100 hover:to-slate-200/50">

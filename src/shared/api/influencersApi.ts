@@ -24,6 +24,18 @@ export interface UpdateInfluencerRequest {
   email?: string | null;
 }
 
+export interface ImportInfluencersRequest {
+  mode?: 'create' | 'update' | 'upsert';
+}
+
+export interface ImportResult {
+  message: string;
+  totalProcessed: number;
+  created: number;
+  updated: number;
+  errors: string[];
+}
+
 class InfluencersApiService {
   private baseURL = env.API_URL;
 
@@ -96,7 +108,7 @@ class InfluencersApiService {
       platform: data.platform,
       username: data.username,
       followers: data.followers,
-      engagement_rate: data.engagementRate, // Convert to snake_case for backend
+      engagement_rate: data.engagementRate, 
       country: data.country,
       categories: data.categories,
       email: data.email,
@@ -141,6 +153,46 @@ class InfluencersApiService {
     await this.request(endpoint, {
       method: 'DELETE',
     });
+  }
+
+  async import(file: File, options: ImportInfluencersRequest = {}): Promise<ImportResult> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    if (options.mode) {
+      formData.append('mode', options.mode);
+    }
+
+    const endpoint = `${API_ENDPOINTS.INFLUENCERS.LIST}/import`;
+
+    const config: RequestInit = {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    };
+
+    // Get token from localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    if (token) {
+      config.headers = {
+        Authorization: `Bearer ${token}`,
+      };
+    }
+
+    try {
+      const url = `${this.baseURL}${endpoint}`;
+      const response = await fetch(url, config);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Import request failed:', error);
+      throw error;
+    }
   }
 }
 
