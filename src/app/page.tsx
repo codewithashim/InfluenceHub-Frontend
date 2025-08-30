@@ -10,7 +10,7 @@ function HomeWrapper() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push('/dashboard')
+      router.push('/influencers')
     }
   }, [isAuthenticated, isLoading, router])
 
