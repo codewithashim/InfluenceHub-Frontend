@@ -10,11 +10,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { Input } from "@/shared/components/ui/input"
 import { Button } from "@/shared/components/ui/button"
 import { Label } from "@/shared/components/ui/label"
-import { Eye, EyeOff, Mail, Lock, User } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock } from "lucide-react"
 import Link from "next/link"
+import { useAuthActions } from "@/shared/hooks"
 
 const signupSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),
@@ -26,11 +26,12 @@ const signupSchema = z.object({
 type SignupForm = z.infer<typeof signupSchema>
 
 export default function SignupPage() {
-  const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   const router = useRouter()
+  const { handleSignup, isLoading, clearMessages } = useAuthActions()
 
   const {
     register,
@@ -42,23 +43,17 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupForm) => {
     setError("")
-    setIsLoading(true)
-
+    setSuccess("")
+    clearMessages()
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      // For demo purposes, accept any valid data
-      if (data.name && data.email && data.password) {
+      await handleSignup(data.email, data.password)
+      setSuccess("Account created successfully! Please log in.")
+      setTimeout(() => {
         router.push("/login")
-      } else {
-        setError("Registration failed")
-      }
+      }, 2000)
     } catch (err) {
       console.error(err)
-      setError("An error occurred during registration")
-    } finally {
-      setIsLoading(false)
+      setError(err instanceof Error ? err.message : "An error occurred during registration")
     }
   }
 
@@ -67,7 +62,7 @@ export default function SignupPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
+            <Lock className="w-6 h-6 text-white" />
           </div>
           <div>
             <CardTitle className="text-2xl font-bold text-gray-900">Create Account</CardTitle>
@@ -76,26 +71,6 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm font-medium text-gray-700">
-                Full Name
-              </Label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Enter your full name"
-                  className="pl-10"
-                  {...register("name")}
-                  disabled={isLoading}
-                />
-              </div>
-              {errors.name && (
-                <p className="text-sm text-red-600">{errors.name.message}</p>
-              )}
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                 Email Address
@@ -173,6 +148,12 @@ export default function SignupPage() {
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-md">
                 <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+
+            {success && (
+              <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-sm text-green-600">{success}</p>
               </div>
             )}
 

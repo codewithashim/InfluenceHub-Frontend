@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../shared/styles/globals.css";
+import { AuthProvider } from "@/shared/context";
  
 export const metadata: Metadata = {
   title: "Influence Hub",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

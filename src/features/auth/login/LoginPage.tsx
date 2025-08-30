@@ -12,6 +12,7 @@ import { Button } from "@/shared/components/ui/button"
 import { Label } from "@/shared/components/ui/label"
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
 import Link from "next/link"
+import { useAuthActions } from "@/shared/hooks"
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -21,10 +22,10 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter()
+  const { handleLogin, isLoading, clearMessages } = useAuthActions()
 
   const {
     register,
@@ -36,23 +37,13 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginForm) => {
     setError("")
-    setIsLoading(true)
-
+    clearMessages()
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      // For demo purposes, accept any valid email/password
-      if (data.email && data.password) {
-        router.push("/influencers")
-      } else {
-        setError("Invalid credentials")
-      }
+      await handleLogin(data.email, data.password)
+      router.push("/dashboard")
     } catch (err) {
       console.error(err)
-      setError("An error occurred during login")
-    } finally {
-      setIsLoading(false)
+      setError(err instanceof Error ? err.message : "An error occurred during login")
     }
   }
 
@@ -137,17 +128,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-            <p className="text-sm font-medium text-gray-700 mb-2">Demo Credentials:</p>
-            <div className="space-y-1 text-sm text-gray-600">
-              <div>
-                <span className="font-medium">Admin:</span> admin@example.com / Admin123!
-              </div>
-              <div>
-                <span className="font-medium">Viewer:</span> viewer@example.com / Viewer123!
-              </div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
